@@ -10,3 +10,32 @@ for(let hearts of getHeart){
         heart("heart-count")
     })
 }
+
+// Call Button
+function makecall(button,id){
+
+    const card=button.closest(".card")
+    const serviceName=card.querySelector(".service-name").innerText
+    const serviceNo=card.querySelector(".service-no").innerText
+    
+    
+    const coins=parseInt(document.getElementById(id).innerText)
+    
+    if(coins>=20){
+        let updatecoin=coins-20
+        document.getElementById(id).innerText=updatecoin
+        alert(`📞 calling ${serviceName} ${serviceNo}...`)
+    }
+    else{
+        alert(`❌ You do not have sufficient coins, need 20 coins to call...`)
+    }
+}
+
+// document.getElementById("call-btn").addEventListener("click", function(){})
+
+let calls=document.querySelectorAll(".call-btn")
+for(let call of calls){
+    call.addEventListener("click", function(){
+        makecall(this,"coins")
+    })
+}
