@@ -59,3 +59,52 @@ const empty=document.getElementById("add-card")
 clear.addEventListener("click",function(){
     empty.innerHTML=''
 })
+
+// Copy button
+function copies(id) {
+    const getCopy = parseInt(document.getElementById(id).innerText);
+    const update = getCopy + 1;
+    document.getElementById(id).innerText = update;
+}
+
+let copyButtons = document.querySelectorAll(".copy-btn");
+
+for (let button of copyButtons) {
+    button.addEventListener("click", function () {
+        const card = button.closest(".card");
+        if (!card) return;
+
+        const textElement = card.querySelector(".service-no");
+        if (!textElement) return;
+
+        const text = textElement.innerText.trim();
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    copies("copy-count");
+                    alert(`Copied: ${text}`);
+                })
+                .catch(() => {
+                    alert("Copy failed. Please try again.");
+                });
+        } else {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand("copy");
+                copies("copy-count");
+                alert(`Copied: ${text}`);
+            } catch {
+                alert("Copy failed. Please try again.");
+            } finally {
+                ta.remove();
+            }
+        }
+    });
+}
+
